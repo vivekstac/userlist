@@ -1,0 +1,86 @@
+@use "forms";
+@use "model";
+@use "table";
+@use "usercard";
+
+* {
+  color: #1a1b1e;
+  letter-spacing: unset;
+  font-family: "Noto Sans Yi", sans-serif !important;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #dedede;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+.form-control,
+.form-check-input {
+  &:focus,
+  &:checked[type="checkbox"] {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.b-none {
+  border: none !important;
+}
+.main-container {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.loading-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: brightness(50%);
+  color: white;
+}
+
+.header-component {
+  background: #001628;
+  padding: 0 50px;
+  height: 60px;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  .logout-main {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    h4 {
+      color: white;
+      margin-right: 10px;
+    }
+
+    button {
+      cursor: pointer;
+    }
+  }
+}
