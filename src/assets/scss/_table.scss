@@ -9,8 +9,13 @@ table {
   .main-body {
     padding: 40px;
     height: 100%;
+    position: relative;
     .body-box {
       background-color: white;
+    }
+
+    @media screen and (max-width: 425px) {
+      padding: 0;
     }
   }
 }
@@ -158,8 +163,8 @@ table {
           }
 
           .avatar {
-            width: 45px;
-            height: 45px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             object-fit: cover;
           }
@@ -193,25 +198,30 @@ table {
     gap: 8px;
     justify-content: flex-end;
     align-items: center;
-    margin-top: 25px;
+    padding: 15px 0;
+    background: #dedede;
+    flex-wrap: wrap;
 
     button {
       background: white;
       border: 1px solid #ddd;
-      border-radius: 6px;
+      border-radius: 2px;
       cursor: pointer;
       transition: 0.2s;
       color: #333;
       padding: 5px 10px;
 
       &.active {
-        background: #1d8cff;
-        color: white;
+        color: #1d8cff;
         border-color: #1d8cff;
       }
 
       &:hover {
         background: #f0f0f0;
+      }
+
+      &:disabled {
+        opacity: 0.6;
       }
     }
   }
@@ -260,6 +270,7 @@ table {
 
           &:last-child {
             border-bottom: none;
+            justify-content: end;
           }
 
           &::before {
@@ -269,6 +280,10 @@ table {
           }
         }
       }
+    }
+
+    .pagination {
+      justify-content: center;
     }
   }
 }

@@ -78,9 +78,16 @@
     }
   }
 
-  &:hover .action-overlay {
-    opacity: 1;
-    visibility: visible;
+  &:hover {
+    .action-overlay {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  .hoverd-icon {
+    width: 20px;
+    height: 20px;
   }
 }
 
@@ -98,11 +105,16 @@
   .user-card h3 {
     font-size: 20px;
   }
+
+  .hoverd-icon {
+    width: 16px;
+    height: 16px;
+  }
 }
 
 @media (max-width: 480px) {
   .user-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
 
   .user-card {
@@ -112,5 +124,10 @@
   .avatar {
     width: 80px;
     height: 80px;
+  }
+
+  .hoverd-icon {
+    width: 12px;
+    height: 12px;
   }
 }

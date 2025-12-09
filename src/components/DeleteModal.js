@@ -1,7 +1,6 @@
 import React from "react";
 
 const DeleteModal = ({ show, onClose, user, onDeleted }) => {
-    console.log(user)
     if (!show) return null;
 
     return (

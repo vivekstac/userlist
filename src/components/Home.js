@@ -7,6 +7,8 @@ import EditModal from "./EditModal";
 import DeleteModal from "./DeleteModal";
 import tableView from "../assets/img/table_view.svg";
 import listView from "../assets/img/list_view.svg";
+import tableViewActive from "../assets/img/table_view-active.svg";
+import listViewActive from "../assets/img/list_view-active.svg";
 import searchIcon from "../assets/img/search_icon.svg"
 
 const API = "http://localhost:5000/users";
@@ -21,6 +23,7 @@ export default function Home() {
   const [deleteUser, setDeleteUser] = useState(null);
   const [isRequesting, setIsRequesting] = useState(false);
   const [form, setForm] = useState({ id: null, firstNam: "", email: "" });
+  const [errors, setErrors] = useState({})
 
   const [isCreate, setIsCreate] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -31,6 +34,8 @@ export default function Home() {
     setIsCreate(false)
     setIsEdit(false)
     setIsDelete(false)
+    setErrors({})
+    setSearchText('')
   }
 
   const loadUsers = async () => {
@@ -56,13 +61,40 @@ export default function Home() {
     setFilteredUsers(filtered);
   };
 
-  const addUser = async (data) => {
-    if (!data) return alert("Enter all fields");
+  const validataUserData = (form) => {
+    const errors = {};
 
-    await fetch(API, {
+    for (let key in form) {
+      const value = form[key].trim();
+
+      if (!value) {
+        errors[key] = `${key} is required`;
+        continue
+      }
+    }
+
+    return errors;
+  };
+
+  const addUser = async (data) => {
+    const validationErrors = validataUserData(data);
+
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length > 0) {
+      return;
+    }
+
+    await fetch(USER_API, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        name: `${data?.firstName} ${data?.lastName}`,
+        email: data?.email,
+        firstName: data?.firstName,
+        lastName: data?.lastName,
+        avatar: data?.avatar,
+      }),
     });
 
     setForm({ id: null, name: "", email: "" });
@@ -74,15 +106,14 @@ export default function Home() {
     setEditUser(filtered);
   };
 
-  const updateUser = async () => {
-    await fetch(`${API}/${form.id}`, {
+  const updateUser = async (data) => {
+    await fetch(`${USER_API}/${data.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+      body: JSON.stringify(data),
     });
 
     setIsEdit(false);
-    setForm({ id: null, name: "", email: "" });
     loadUsers();
   };
 
@@ -138,11 +169,11 @@ export default function Home() {
               </div>
               <div className="view-toggle">
                 <button className={`${view === "table" ? "active" : ""}`} onClick={() => setView("table")}>
-                  <img src={tableView} alt="table view icon" />Table
+                  <img src={`${view === "table" ? tableViewActive : tableView}`} alt="table view icon" />Table
                 </button>
 
                 <button className={`${view !== "table" ? "active" : ""}`} onClick={() => setView("list")}>
-                  <img src={listView} alt="list view icon" />
+                  <img src={`${view !== "table" ? listViewActive : listView}`} alt="list view icon" />
                   Card
                 </button>
               </div>
@@ -160,15 +191,18 @@ export default function Home() {
 
       {isCreate && <CreateNewModal
         show={!!isCreate}
-        user={editUser}
         url={USER_API}
-        onClose={() => setIsCreate(!isEdit)}
+        errors={errors}
+        setErrors={setErrors}
+        onClose={() => setIsCreate(!isCreate)}
         onUpdated={addUser}
       />}
       {isEdit && <EditModal
         show={!!isEdit}
         user={editUser}
         url={USER_API}
+        errors={errors}
+        setErrors={setErrors}
         onClose={() => setIsEdit(!isEdit)}
         onUpdated={updateUser}
       />}

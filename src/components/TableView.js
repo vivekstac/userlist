@@ -22,7 +22,7 @@ export default function TableView({ data, onEdit, onDelete }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {pageData.map((row) => (
+                        {pageData && pageData.length > 0 && pageData.map((row) => (
                             <tr key={row.id}>
                                 <td><img className="avatar" src={row.avatar} alt={row.name} width="50" height="50" /></td>
                                 <td>{row.email}</td>
@@ -38,16 +38,31 @@ export default function TableView({ data, onEdit, onDelete }) {
                         ))}
                     </tbody>
                 </table>
+                {pageData && pageData.length === 0 && <div style={{ padding: "20px", textAlign: 'center' }}>
+                    <h2>No Record Found</h2>
+                </div>}
             </div>
 
             <div className="pagination">
                 <button disabled={page === 1} onClick={() => setPage(page - 1)}>
                     {`<`}
                 </button>
+                {[...Array(totalPages)].map((_, index) => {
+                    const pageNum = index + 1;
+                    return (
+                        <button
+                            key={pageNum}
+                            className={page === pageNum ? "active" : ""}
+                            onClick={() => setPage(pageNum)}
+                        >
+                            {pageNum}
+                        </button>
+                    );
+                })}
 
-                <span style={{ margin: "0 10px" }}>
+                {/* <span style={{ margin: "0 10px" }}>
                     Page {page} of {totalPages}
-                </span>
+                </span> */}
 
                 <button disabled={page === totalPages} onClick={() => setPage(page + 1)}>
                     {`>`}
